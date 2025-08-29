@@ -1,0 +1,101 @@
+{% extends 'client/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="bradcam_area bradcam_bg_1">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-12">
+                <div class="bradcam_text text-center">
+                    <h3>Update Profile</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4>Update Your Company Profile</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="row">
+                            <!-- Left Column -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="company_name">Company Name</label>
+                                    {{ form.company_name }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="phone_number">Phone Number</label>
+                                    {{ form.phone_number }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="company_address">Company Address</label>
+                                    {{ form.company_address }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="company_location">Company Location</label>
+                                    {{ form.company_location }}
+                                </div>
+                            </div>
+
+                            <!-- Right Column -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="company_zip">Company Zip</label>
+                                    {{ form.company_zip }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="description">Company Description</label>
+                                    {{ form.description }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="services">Services</label>
+                                    {{ form.services }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="client_logo">Company Logo</label>
+                                    {{ form.client_logo }}
+                                    {% if user.client_profile.client_logo %}
+                                        <div class="mt-2">
+                                            <img src="{{ user.client_profile.client_logo.url }}" width="100" height="100" alt="Client Logo">
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 mt-3">Update Profile</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.form-group {
+    margin-bottom: 15px;
+}
+.form-control, .form-check-input {
+    width: 100%;
+    padding: 10px;
+}
+button {
+    margin-top: 20px;
+}
+</style>
+{% endblock content %}

@@ -1,0 +1,102 @@
+{% extends 'client/base.html' %}
+
+{% block content %}
+<div class="bradcam_area bradcam_bg_1">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="bradcam_text text-center">
+                    <h3>Post Job</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <h3 class="text-center text-danger"><i class="fa fa-credit-card"></i> Secure Payment</h3>
+    
+    <div class="card shadow-lg p-4 mx-auto mt-4" style="max-width: 500px;">
+        <div class="text-center">
+            <h4 class="fw-bold">Payment for: <span class="text-primary">{{ job.job_name }}</span></h4>
+            <p><strong>Freelancer:</strong> {{ assigned_worker.candidate.freelancer_name }}</p>
+            <h4 class="fw-bold">Salary: <span class="text-success">${{ job.salary }}</span></h4>
+        </div>
+
+        <form method="post" action="{% url 'process_payment' job.id %}" onsubmit="return validateExpiration()">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label class="form-label fw-bold">Card Number</label>
+                <input type="text" name="card_number" class="form-control" placeholder="xxxx xxxx xxxx xxxx" required pattern="[0-9]{16}">
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Expiry Date</label>
+                    <input type="text" name="expiry_date" id="exp_date" class="form-control" placeholder="MM/YY" required pattern="\d{2}/\d{2}">
+                    <small id="exp_error" class="text-danger d-none">Invalid expiration date</small>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">CVV</label>
+                    <input type="text" name="cvv" class="form-control" placeholder="xxx" required pattern="\d{3}">
+                </div>
+            </div>
+
+
+            <button type="submit" class="btn btn-primary btn-lg w-100">
+                <i class="fa fa-lock"></i> Submit Payment
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function validateExpiration() {
+        let expInput = document.getElementById("exp_date").value.trim();
+        let errorMessage = document.getElementById("exp_error");
+        
+        let today = new Date();
+        let currentYear = today.getFullYear() % 100;
+        let currentMonth = today.getMonth() + 1;
+
+        let expParts = expInput.split("/");
+        if (expParts.length !== 2) {
+            errorMessage.classList.remove("d-none");
+            return false;
+        }
+
+        let expMonth = parseInt(expParts[0]);
+        let expYear = parseInt(expParts[1]);
+
+        if (isNaN(expMonth) || isNaN(expYear) || expMonth < 1 || expMonth > 12) {
+            errorMessage.classList.remove("d-none");
+            return false;
+        }
+
+        if (expYear < currentYear || (expYear === currentYear && expMonth < currentMonth)) {
+            errorMessage.classList.remove("d-none");
+            return false;
+        }
+
+        errorMessage.classList.add("d-none");
+        return true;
+    }
+</script>
+
+<style>
+    .container { max-width: 600px; }
+    .card { border-radius: 12px; }
+    .btn-primary {
+        background-color: #28a745;
+        border: none;
+        font-size: 1.2rem;
+        padding: 10px;
+        border-radius: 8px;
+    }
+    .btn-primary:hover {
+        background-color: #218838;
+    }
+    .form-control { margin-bottom: 10px; }
+</style>
+{% endblock %}

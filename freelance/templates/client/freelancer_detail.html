@@ -1,0 +1,151 @@
+{% extends 'client/base.html' %}
+
+{% block content %}
+<div class="bradcam_area bradcam_bg_1">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="bradcam_text">
+                    <h3>Freelancer Details</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <h2 class="text-center">Freelancer Profile</h2>
+    
+    <div class="profile-card">
+        {% if freelancer.profile_photo %}
+            <div class="profile-img">
+                <img src="{{ freelancer.profile_photo.url }}" alt="{{ freelancer.freelancer_name }}">
+            </div>
+        {% endif %}
+
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th>Freelancer Name</th>
+                    <td>{{ freelancer.freelancer_name }}</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>{{ freelancer.user.email }}</td>
+                </tr>
+                <tr>
+                    <th>Phone</th>
+                    <td>{{ freelancer.phone_number }}</td>
+                </tr>
+                <tr>
+                    <th>Skills</th>
+                    <td>{{ freelancer.skills }}</td>
+                </tr>
+                <tr>
+                    <th>Experience</th>
+                    <td>{{ freelancer.experience_years }} years</td>
+                </tr>
+                <tr>
+                    <th>Education</th>
+                    <td>{{ freelancer.education }}</td>
+                </tr>
+                <tr>
+                    <th>Languages</th>
+                    <td>{{ freelancer.languages }}</td>
+                </tr>
+                <tr>
+                    <th>Certifications</th>
+                    <td>{{ freelancer.certifications }}</td>
+                </tr>
+                <tr>
+                    <th>References</th>
+                    <td>{{ freelancer.references }}</td>
+                </tr>
+                <tr>
+                    <th>Hobbies</th>
+                    <td>{{ freelancer.hobbies }}</td>
+                </tr>
+                <tr>
+                    <th>Projects</th>
+                    <td>{{ freelancer.projects }}</td>
+                </tr>
+                <tr>
+                    <th>Availability</th>
+                    <td>
+                        {% if freelancer.availability_days %}
+                            {{ freelancer.availability_days|join:", " }}
+                        {% else %}
+                            Not specified
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Availability Hours</th>
+                    <td>{{ freelancer.availability_hours }}</td>
+                </tr>
+                <tr>
+                    <th>Portfolio</th>
+                    <td>
+                        {% if freelancer.portfolio_url %}
+                            <a href="{{ freelancer.portfolio_url }}" target="_blank" class="btn btn-info btn-sm">View Portfolio</a>
+                        {% else %}
+                            Not available
+                        {% endif %}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="{% url 'view_responses' job.id %}" class="btn btn-secondary">Back to Responses</a>
+    </div>
+</div>
+
+<style>
+    .profile-card {
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+    }
+    .profile-img {
+        text-align: center;
+        margin-bottom: 15px;
+    }
+    .profile-img img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid #007bff;
+    }
+    .table th {
+        background-color: #007bff;
+        color: white;
+        text-align: left;
+        padding: 10px;
+    }
+    .table td {
+        padding: 10px;
+        text-align: left;
+    }
+    .btn {
+        padding: 10px 15px;
+        border-radius: 5px;
+    }
+    .btn-info {
+        background-color: #17a2b8;
+        border: none;
+    }
+    .btn-secondary {
+        background-color: #6c757d;
+        border: none;
+    }
+    .btn:hover {
+        opacity: 0.8;
+    }
+</style>
+
+{% endblock %}

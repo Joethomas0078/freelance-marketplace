@@ -1,0 +1,126 @@
+{% extends 'freelancer/base.html' %}
+
+{% block content %}
+<div class="bradcam_area bradcam_bg_1">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="bradcam_text text-center">
+                    <h2>Chat with {{ client.username }} (Job: {{ job.job_name }})</h2>
+                    <p>Job: <strong>{{ job.job_name }}</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-4">
+    
+    <a href="{% url 'myjobs' %}" class="btn btn-secondary mb-3">⬅ Back</a>
+
+    <div class="chat-container">
+        <div class="chat-box" id="chatBox">
+            {% for msg in messages %}
+                <div class="chat-message {% if msg.sender == request.user %}text-right{% else %}text-left{% endif %}">
+                    <p class="chat-username">{{ msg.sender.username }}</p>
+                    <div class="chat-bubble">
+                        {{ msg.message }}
+                        <span class="chat-timestamp">{{ msg.timestamp|date:"H:i" }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <form method="POST" class="chat-form">
+            {% csrf_token %}
+            <textarea name="message" class="form-control chat-input" placeholder="Type a message..." required></textarea>
+            <button type="submit" class="btn btn-success chat-send">Send</button>
+        </form>
+    </div>
+</div>
+
+<style>
+    /* Chat Page Styling */
+    .chat-container {
+        max-width: 700px;
+        margin: auto;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        background: #fff;
+        padding: 10px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .chat-box {
+        height: 400px;
+        overflow-y: auto;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 10px;
+    }
+
+    .chat-message {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 10px;
+    }
+
+    .chat-left { align-items: flex-start; }
+    .chat-right { align-items: flex-end; }
+
+    .chat-username {
+        font-size: 12px;
+        font-weight: bold;
+        margin-bottom: 2px;
+        color: #6c757d;
+    }
+
+    .chat-bubble {
+        padding: 10px 15px;
+        border-radius: 20px;
+        max-width: 80%;
+        word-wrap: break-word;
+        position: relative;
+    }
+
+    .chat-left .chat-bubble {
+        background: #e9ecef;
+        color: #212529;
+        border-top-left-radius: 0;
+    }
+
+    .chat-right .chat-bubble {
+        background: #28a745;
+        color: white;
+        border-top-right-radius: 0;
+    }
+
+    .chat-timestamp {
+        font-size: 10px;
+        opacity: 0.7;
+        position: absolute;
+        bottom: -16px;
+        right: 10px;
+    }
+
+    .chat-form {
+        display: flex;
+        align-items: center;
+        margin-top: 15px;
+    }
+
+    .chat-input {
+        flex-grow: 1;
+        border-radius: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        margin-right: 10px;
+    }
+
+    .chat-send {
+        border-radius: 20px;
+        padding: 8px 15px;
+    }
+</style>
+
+{% endblock %}

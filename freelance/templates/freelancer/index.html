@@ -1,0 +1,77 @@
+{% extends 'freelancer/base.html' %}
+{% load static %}
+{% block content %}
+
+
+
+    <!-- slider_area_start -->
+    <div class="slider_area">
+        <div class="single_slider  d-flex align-items-center slider_bg_1">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-7 col-md-6">
+                        <div class="slider_text">
+                            <h5 class="wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".2s">Easier to find jobs</h5>
+                            <h3 class="wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".3s">Find your Dream Job</h3>
+                            <p class="wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".4s">We provide online works with quick approval that suit your term length</p>
+                            <div class="sldier_btn wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".5s">
+                                {% comment %} <a href="#" class="boxed-btn3">Upload your Resume</a> {% endcomment %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ilstration_img wow fadeInRight d-none d-lg-block text-right" data-wow-duration="1s" data-wow-delay=".2s">
+            <img src="{% static 'img/banner/illustration.png' %}" alt="">
+        </div>
+    </div>
+    <!-- slider_area_end -->
+
+<br>
+{% if messages %}
+<div class="alert alert-danger">
+    {% for message in messages %}
+        <p>{{ message }}</p>
+    {% endfor %}
+</div>
+{% endif %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Job Listings</h2>
+    <div class="job_lists">
+        <div class="row">
+            {% for job in jobs %}
+            <div class="col-lg-12 col-md-12">
+                <div class="single_jobs white-bg d-flex justify-content-between align-items-center p-3 shadow-sm">
+                    <div class="jobs_left d-flex align-items-center">
+                        <div class="thumb">
+                            <img src="{{ job.client.client_logo.url }}" alt="Job Icon" style="height:100px;width:100px;">
+                        </div>
+                        <div class="jobs_content ml-3">
+                            <h4>{{ job.job_name }}</h4>
+                            <div class="links_locat d-flex align-items-center">
+                                <div class="location mr-3">
+                                    <p><i class="fa fa-map-marker"></i> {{ job.client.company_location }}</p>
+                                </div>
+                                <div class="salary">
+                                    <p><i class="fa fa-money"></i> {{ job.salary }} /-</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="jobs_right text-right">
+                        {% if job.id in applied_jobs %}
+                            <button class="btn btn-secondary" disabled>Applied</button>
+                        {% else %}
+                            <a href="{% url 'free_job_details' job.id %}" class="btn btn-primary">View More</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+    {% endblock content %}

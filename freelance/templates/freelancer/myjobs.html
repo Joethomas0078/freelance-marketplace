@@ -1,0 +1,96 @@
+{% extends 'freelancer/base.html' %}
+{% load static %}
+{% block content %}
+
+
+
+<div class="bradcam_area bradcam_bg_1">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-12">
+                <div class="bradcam_text text-center">
+                    <h3>My Job List</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container mt-4">
+    <h2 class="text-center mb-4">My Jobs</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Logo</th>
+                <th>Client</th>
+                <th>Company Contact</th>
+                <th>Job Title</th>
+                <th>Description</th>
+                <th>Salary</th>
+                <th>Start Time</th>
+                <th>Deadline</th>
+                <th>Status</th>
+                <th>Chat</th>
+                <th>Action</th>
+                <th>Payment</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for application in applications %}
+                {% with job=application.job %}
+                <tr>
+                    <td>
+                        <img src="{{ job.client.client_logo.url }}" alt="{{ job.client.company_name }}" style="width:50px;height:50px;">
+                    </td>
+                    <td>{{ job.client.company_name }},{{ job.client.company_address }}</td>
+                    <td><i>{{ job.client.user.email }}</i><br>{{ job.client.phone_number }}</td>
+                    <td>{{ job.job_name }}</td>
+                    <td>{{ job.description }}</td>
+                    <td>${{ job.salary }}</td>
+                    <td>{{ job.job_start_time }}</td>
+                    <td>{{ job.deadline }}</td>
+                    <td>{{ job.status }}</td>
+                    <td>
+                        <a href="{% url 'freelancer_chat' job.id %}" class="btn btn-primary btn-sm">Chat</a>
+                    </td>
+                    <td>
+                        {% if job.deadline < now %}
+                            <span class="text-danger">Deadline Over, Contract Cancelled</span>
+                        {% elif job.status == "Completed" %}
+                            <span class="text-success">Job Completed</span>
+                        {% else %}
+                            {% if job.job_start_time <= now.date %}
+                                {% if job.status == "In progress" %}
+                                    <form action="{% url 'end_job' job.id %}" method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger">End</button>
+                                    </form>
+                                {% elif job.status == "open" %}
+                                    <form action="{% url 'start_job' job.id %}" method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-success">Start</button>
+                                    </form>
+                                {% endif %}
+                            {% else %}
+                            <button class="btn btn-secondary" disabled title="You can start working after the job's start time.">Start</button>                            {% endif %}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if job.payment_status == 'pending' %}
+                            <span class="text-success">Not yet Paid</span>
+                        {% else %}
+                        <span class="text-success">Payment Received</span>
+                        {% endif %}
+                    </td>
+                    
+                    
+                </tr>
+                {% endwith %}
+            {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center">No jobs available</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

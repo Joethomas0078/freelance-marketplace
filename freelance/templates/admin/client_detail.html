@@ -1,0 +1,72 @@
+{% extends 'admin/base.html' %}
+{% block content %}
+
+<!-- Hero Section -->
+<div class="bradcam_area bradcam_bg_1">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-12">
+                <div class="bradcam_text text-center">
+                    <h3>Client Details</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Client Details Section -->
+<div class="container mt-5">
+    <div class="card shadow-lg p-5 rounded-lg border-0" 
+         style="max-width: 1000px; margin: auto; background: #ddd6d6; ">
+
+        <!-- Company Name & Logo -->
+        <div class="text-center mb-4">
+            <h2 class="text-primary font-weight-bold">Company : {{ client.company_name }}</h2>
+            <img src="{{ client.client_logo.url }}" alt="Client Logo" 
+                 class="rounded-circle shadow-sm border mt-3" 
+                 width="140" height="140" style="object-fit: cover;">
+        </div>
+
+        
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <strong>Username:</strong> <br> {{ client.user.username }}
+                
+            </div>
+            <div class="col-md-6 mb-3">
+                <strong>Email:</strong> <br> {{ client.user.email }}
+            </div>
+            <div class="col-md-6 mb-3">
+                <strong>Phone:</strong> <br> {{ client.phone_number }}
+            </div>
+            <div class="col-md-6 mb-3">
+                <strong>Address:</strong> <br> {{ client.company_address }}
+            </div>
+            <div class="col-md-6 mb-3">
+                <strong>Services:</strong> <br> {{ client.services }}
+            </div>
+            <div class="col-12 mb-3">
+                <strong>Description:</strong> <br> {{ client.description }}
+            </div>
+            <div class="col-12">
+                <strong>Approval Status:</strong>
+                {% if client.is_approved %}
+                    <span class="badge badge-success px-3 py-2">Approved</span>
+                {% else %}
+                    <span class="badge badge-warning px-3 py-2">Pending</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="text-center mt-4">
+            {% if not client.is_approved %}
+                <a href="{% url 'approve_client' client.id %}" class="btn btn-success px-4 py-2 shadow-sm">Approve Client</a>
+                <a href="{% url 'reject_client' client.id %}" class="btn btn-warning px-4 py-2 shadow-sm">Reject Client</a>
+            {% endif %}
+            <a href="{% url 'client_list' %}" class="btn btn-secondary px-4 py-2 shadow-sm">Back to List</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

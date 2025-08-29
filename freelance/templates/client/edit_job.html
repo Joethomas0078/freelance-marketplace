@@ -1,0 +1,25 @@
+{% extends 'client/base.html' %}
+{% block content %}
+<div class="bradcam_area bradcam_bg_1">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="bradcam_text">
+                    <h3>Edit Jobs List</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container mt-5">
+    <h2 class="text-center">Edit Job</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success mt-4 btn-custom">Save Changes</button>
+        <a href="{% url 'job_list' %}" class="btn btn-warning mt-4 btn-custom">Cancel</a>
+    </form>
+</div>
+<br>
+<br>
+{% endblock %}

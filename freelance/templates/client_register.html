@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% if form.errors %}
+<div class="alert alert-danger">
+    <ul>
+        {% for field, errors in form.errors.items %}
+            {% for error in errors %}
+                <li>{{ field|title }}: {{ error }}</li>
+            {% endfor %}
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+    <!-- bradcam_area -->
+    <div class="bradcam_area bradcam_bg_1">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="bradcam_text">
+                        <h3>Client Registration</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/ bradcam_area -->
+
+    <!-- ================ Registration Form Section Start ================= -->
+    <section class="contact-section section_padding">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-12">
+                    <div class="register-container">
+                        <h2 class="form-title">Register Your Company</h2>
+                        <form method="post" enctype="multipart/form-data" class="register-form">
+                            {% csrf_token %}
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="username">Username</label>
+                                        {{ form.username }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        {{ form.email }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="password1">Password</label>
+                                        {{ form.password1 }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="password2">Confirm Password</label>
+                                        {{ form.password2 }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="company_name">Company Name</label>
+                                        {{ form.company_name }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="phone_number">Phone Number</label>
+                                        {{ form.phone_number }}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="company_address">Company Address</label>
+                                        {{ form.company_address }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="description">Description</label>
+                                        {{ form.description }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="services">Services Offered</label>
+                                        {{ form.services }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="client_logo">Company Logo</label>
+                                        {{ form.client_logo }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="company_location">Company Location</label>
+                                        {{ form.company_location }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="company_zip">Company ZIP</label>
+                                        {{ form.company_zip }}
+                                    </div>
+                                </div>
+                                
+                            </div>
+
+                            <button type="submit" class="btn-custom">Register</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ================ Registration Form Section End ================= -->
+
+    <style>
+        /* Center the form and add a shadowed container */
+        .register-container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-title {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border 0.3s;
+            min-height: 50px;  /* Reduce height */
+            max-height: 100px; /* Prevent excessive expansion */
+            resize: vertical;  /* Allow resizing but limit it */
+            padding: 8px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        /* Make textareas uniform */
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        /* Style the file input */
+        .form-group input[type="file"] {
+            padding: 5px;
+            border: none;
+        }
+
+        /* Button Styling */
+        .btn-custom {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            border: none;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+
+        /* Responsive layout */
+        @media (max-width: 768px) {
+            .col-md-6 {
+                width: 100%;
+            }
+        }
+    </style>
+
+{% endblock %}

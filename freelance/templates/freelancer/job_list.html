@@ -1,0 +1,101 @@
+{% extends 'freelancer/base.html' %}
+{% load static %}
+{% block content %}
+{% load custom_filters %}
+
+<div class="bradcam_area bradcam_bg_1">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-12">
+                <div class="bradcam_text text-center">
+                    <h3>Job List</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if messages %}
+<div class="alert alert-danger">
+    {% for message in messages %}
+        <p>{{ message }}</p>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Job Listings</h2>
+
+    <!-- 🔍 Filter Section -->
+    <form method="get" class="mb-5">
+        <div class="row g-3">
+            <div class="col-md-4">
+                <input type="text" name="search" class="form-control" placeholder="Search Job Name" value="{{ request.GET.search }}">
+            </div>
+            <div class="col-md-4">
+                <select name="location" class="form-select">
+                    <option value="">All Locations</option>
+                    {% for loc in locations %}
+                        <option value="{{ loc }}" {% if request.GET.location == loc %}selected{% endif %}>{{ loc }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <input type="number" name="min_salary" class="form-control" placeholder="Minimum Salary" value="{{ request.GET.min_salary }}">
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col text-center">
+                <button type="submit" class="btn btn-success">Apply Filters</button>
+                <a href="{% url 'view_job_lists' %}" class="btn btn-secondary">Clear</a>
+            </div>
+        </div>
+    </form>
+
+    <!-- 📄 Job List Section -->
+    <div class="job_lists">
+        <div class="row">
+            {% for job in jobs %}
+            <div class="col-lg-12 col-md-12">
+                <div class="single_jobs white-bg d-flex justify-content-between align-items-center p-3 shadow-sm">
+                    <div class="jobs_left d-flex align-items-center">
+                        <div class="thumb">
+                            <img src="{{ job.client.client_logo.url }}" alt="Job Icon" style="height:100px;width:100px;">
+                        </div>
+                        <div class="jobs_content ml-3">
+                            <h4>{{ job.job_name }}</h4>
+                            <div class="links_locat d-flex align-items-center">
+                                <div class="location mr-3">
+                                    <p><i class="fa fa-map-marker"></i> {{ job.client.company_location }}</p>
+                                </div>
+                                <div class="salary">
+                                    <p><i class="fa fa-money"></i> {{ job.salary }} /-</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="jobs_right text-right">
+                        {% with applied_jobs_status|dict_get:job.id as status %}
+                            {% if status == 'accepted' %}
+                                <button class="btn btn-success" disabled>Accepted</button>
+                            {% elif status == 'rejected' %}
+                                <button class="btn btn-danger" disabled>Rejected</button>
+                            {% elif status == 'pending' %}
+                                <button class="btn btn-secondary" disabled>Applied</button>
+                            {% else %}
+                                <a href="{% url 'free_job_details' job.id %}" class="btn btn-primary">View More</a>
+                            {% endif %}
+                        {% endwith %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center mt-4">
+                <p>No jobs found with the selected filters.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
